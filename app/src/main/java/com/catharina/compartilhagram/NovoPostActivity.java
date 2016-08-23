@@ -1,5 +1,6 @@
 package com.catharina.compartilhagram;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ public class NovoPostActivity extends AppCompatActivity{
     private EditText edtAutor;
     private EditText edtDescricao;
 
+    private Post post;
+
     private Realm realm;
     private DAO dao;
 
@@ -34,6 +37,17 @@ public class NovoPostActivity extends AppCompatActivity{
 
         edtAutor = (EditText) findViewById(R.id.edtTitulo);
         edtDescricao = (EditText) findViewById(R.id.edtDescricao);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            String idpost = bundle.getString("IDPOST");
+            if(idpost != null) {
+                post = dao.getPostById(idpost);
+                edtAutor.setText(post.getAutor());
+                edtDescricao.setText(post.getDescricao());
+            }
+        }
+
     }
 
     @Override
@@ -55,15 +69,20 @@ public class NovoPostActivity extends AppCompatActivity{
     }
 
     private void salvar() {
-        if(edtDescricao.getText().toString().trim() == ""){
-            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-            dlg.setTitle("Descrição inválida");
-            dlg.setMessage("Por favor, insira uma descrição para o post");
+        if(this.post != null){
+            realm.beginTransaction();
+            post.setAutor(edtAutor.getText().toString());
+            post.setDescricao(edtDescricao.getText().toString());
+            post.setDataPost(new Date());
+            realm.commitTransaction();
         }
-        Post post = new Post();
-        post.setAutor(edtAutor.getText().toString());
-        post.setDescricao(edtDescricao.getText().toString());
-        post.setDataPost(new Date());
-        dao.savePost(post);
+        else {
+            Post post = new Post();
+            post.setAutor(edtAutor.getText().toString());
+            post.setDescricao(edtDescricao.getText().toString());
+            post.setDataPost(new Date());
+
+            dao.savePost(post);
+        }
     }
 }

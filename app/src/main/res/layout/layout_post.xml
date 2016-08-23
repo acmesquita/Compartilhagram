@@ -49,8 +49,19 @@
                     android:text="01/01/2014 12:32"
                     android:id="@+id/textData"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/editar"
+                    android:layout_toStartOf="@+id/editar" />
+
+                <ImageButton
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/editar"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_action_edit" />
+
             </RelativeLayout>
 
             <LinearLayout

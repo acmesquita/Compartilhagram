@@ -1,6 +1,7 @@
 package com.catharina.compartilhagram.dominio.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.catharina.compartilhagram.NovoPostActivity;
 import com.catharina.compartilhagram.R;
 import com.catharina.compartilhagram.dominio.dao.DAO;
 import com.catharina.compartilhagram.dominio.modelo.Post;
@@ -59,6 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostVieWolder>
         TextView textDescricao;
         TextView textLikes;
         ImageButton curtir;
+        ImageButton editar;
 
         private Realm realm;
         private DAO dao;
@@ -72,19 +75,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostVieWolder>
             this.textDescricao = (TextView) itemView.findViewById(R.id.textDescricao);
             this.textLikes = (TextView) itemView.findViewById(R.id.textLikes);
             this.curtir = (ImageButton) itemView.findViewById(R.id.curtir);
+            this.editar = (ImageButton) itemView.findViewById(R.id.editar);
             this.curtir.setOnClickListener(this);
+            this.editar.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-            realm = Realm.getDefaultInstance();
-            dao = DAO.getInstance(realm);
-            realm.beginTransaction();
+            if(v.getId() == R.id.curtir) {
+                realm = Realm.getDefaultInstance();
+                dao = DAO.getInstance(realm);
+                realm.beginTransaction();
                 Post post = posts.get(getAdapterPosition());
                 int curtidas = Integer.parseInt(post.getCurtidas()) + 1;
                 post.setCurtidas(String.valueOf(curtidas));
-            realm.commitTransaction();
-            notifyDataSetChanged();
+                realm.commitTransaction();
+                notifyDataSetChanged();
+            }
+            else if (v.getId() == R.id.editar){
+                Post post = posts.get(getAdapterPosition());
+                Intent intent = new Intent(itemView.getContext(), NovoPostActivity.class);
+                intent.putExtra("IDPOST", post.getId());
+                context.startActivity(intent);
+            }
         }
     }
 }
