@@ -4,4 +4,5 @@
     <string name="lbl_titulo">Título</string>
     <string name="lbl_descricao">No que está pensando?</string>
     <string name="lbl_autor">Qual o seu nome?</string>
+    <string name="salvar">Salvar</string>
 </resources>
