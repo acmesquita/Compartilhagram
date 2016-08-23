@@ -49,4 +49,10 @@ public class MainActivityFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        adapter = new PostAdapter(getContext(), dao.getPostAll());
+        recyclerView.setAdapter(adapter);
+        super.onResume();
+    }
 }
