@@ -42,7 +42,7 @@ public class DAO {
     }
 
     public RealmResults<Post> getPostByAutor(String nome){
-        return realm.where(Post.class).contains("autor", nome, Case.INSENSITIVE).findAll();
+        return realm.where(Post.class).contains("autor", nome, Case.INSENSITIVE).findAllSorted("dataPost", Sort.DESCENDING);
     }
 
     public RealmResults<Post> getPostAll(){
